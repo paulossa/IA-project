@@ -26,3 +26,5 @@ function Bird() {
     return this;? 
 }
 ``` 
+1. https://youtu.be/c6y21FkaUqw
+2. https://www.youtube.com/watch?v=YtRA6tqgJBc
