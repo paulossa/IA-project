@@ -1,7 +1,7 @@
 
 function Pipe() {
   this.top = random(10, height/2);
-  this.bottom = this.top + random(90, 180);
+  this.bottom = this.top + random(90, 180) + 20;
 
   this.x = width;
   this.w = 40;

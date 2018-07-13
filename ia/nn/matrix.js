@@ -1,3 +1,6 @@
+// let m = new Matrix(3,2);
+
+
 class Matrix {
   constructor(rows, cols) {
     this.rows = rows;
@@ -64,7 +67,7 @@ class Matrix {
   static multiply(a, b) {
     // Matrix product
     if (a.cols !== b.rows) {
-      console.log('Columns of A must match rows of B.');
+      console.log('Columns of A must match rows of B.')
       return;
     }
 

@@ -1,6 +1,6 @@
 airResistance = .95;
 
-function Bird() {
+function Bird(brain) {
   this.y = height/2;
   this.x = 70;
 
@@ -8,10 +8,19 @@ function Bird() {
   this.velocity = 0;
   this.lift = -10;
 
-  this.brain = new NeuralNetwork(4, 4, 1);
+
+  this.score = 0;
+  this.fitness = 0;
+
+  if(brain) {
+    this.brain = brain.copy();
+  } else {
+    this.brain = new NeuralNetwork(4, 4, 2);
+  } 
 
   this.draw = function() {
-    fill(255);
+    stroke(255);
+    fill(255, 50);
     ellipse(this.x, this.y, 32, 32);
   }
 
@@ -35,13 +44,16 @@ function Bird() {
     inputs[3] = closest.x / width;
 
     let output = this.brain.predict(inputs);
-    if (output > 0.5) {
+    if (output[0] > output[1]) {
       this.up();
     }
 
   }
 
   this.update = function() {
+
+    this.score++;
+
     this.velocity += this.gravity;
     this.velocity *= airResistance;
     this.y += this.velocity;
@@ -57,5 +69,9 @@ function Bird() {
 
   this.up = function ( ) {
     this.velocity += this.lift;
+  }
+
+  this.mutate = function() {
+    //this.brain.mutate(0.1);
   }
 }

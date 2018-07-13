@@ -2,12 +2,18 @@
 var HEIGHT = 400,
     WIDTH = 600;
 
-var bird;
+const TOTAL = 250;
+var birds = [];
+let savedBirds = [];
 var pipes = [];
 
 function setup () {
   createCanvas(WIDTH, HEIGHT);
-  bird = new Bird();
+
+  for( let i = 0; i < TOTAL; i++) {
+    birds[i] = new Bird();
+  }
+  
   pipes.push(new Pipe());
 }
 
@@ -20,15 +26,25 @@ function draw() {
     if (pipes[i].offscreen()) {
       pipes.splice(i, 1);
     }
-    if (pipes[i].hits(bird)) {
-      console.log("bateu");
+
+    for ( let j = birds.length-1; j >= 0; j--) {
+      if (pipes[i].hits(birds[j])) {
+        savedBirds.push(birds.splice(j, 1));
+      }
     }
   }
 
-  bird.think(pipes);
-  bird.update();
-  bird.draw();
-  if (frameCount % 100 == 0) {
+  for (let bird of birds) {
+    bird.think(pipes);
+    bird.update();
+    bird.draw();
+  }
+
+  if(birds.length == 0) {
+    nextGeneration();
+  }
+
+  if (frameCount % 125 == 0) {
     pipes.push(new Pipe());
   }
 }
