@@ -25,6 +25,7 @@ function draw() {
     }
   }
 
+  bird.think(pipes);
   bird.update();
   bird.draw();
   if (frameCount % 100 == 0) {
@@ -32,8 +33,8 @@ function draw() {
   }
 }
 
-function keyPressed() {
-  if (key == ' ') {
-    bird.up();
-  }
-}
+//function keyPressed() {
+//  if (key == ' ') {
+//    bird.up();
+//  }
+//}

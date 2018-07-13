@@ -8,9 +8,37 @@ function Bird() {
   this.velocity = 0;
   this.lift = -10;
 
+  this.brain = new NeuralNetwork(4, 4, 1);
+
   this.draw = function() {
     fill(255);
     ellipse(this.x, this.y, 32, 32);
+  }
+
+  this.think = function(pipes) {
+
+    // Find de closest pipe
+    let closest = null;
+    let closestD = Infinity;
+    for (let i = 0; i < pipes.length; i++) {
+      let d =  pipes[i].x - this.x;
+      if(d < closestD && d > 0){
+        closest = pipes[i];
+        closestD = d;
+      }
+    }
+
+    let inputs = [];
+    inputs[0] = this.y / height;
+    inputs[1] = closest.top / height;
+    inputs[2] = closest.bottom / height;
+    inputs[3] = closest.x / width;
+
+    let output = this.brain.predict(inputs);
+    if (output > 0.5) {
+      this.up();
+    }
+
   }
 
   this.update = function() {
