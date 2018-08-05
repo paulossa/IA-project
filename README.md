@@ -3,9 +3,9 @@
 #### Professor: [Herman Martins Gomes.](http://www.dsc.ufcg.edu.br/~hmg/teaching.htm)
 #### Alunos: 
   - [Paulo Santos](https://github.com/paulossa) :squirrel:
+  - [Rafael Falcao](https://github.com/rafaelvfalc) :squirrel:
   - André Leite
-  - Rafael 
-  - ? 
+  - Pedro Saraiva
 
 
 This project will be a proof of concept that uses a [Artificial Neural Network](https://en.wikipedia.org/wiki/Artificial_neural_network)  combined with [Genetic Algortihms](https://en.wikipedia.org/wiki/Genetic_algorithm) to train birds in a 'game-like' environment that simulates a similar game to [Flappy Birds](http://flappybird.io/)
@@ -26,5 +26,14 @@ function Bird() {
     return this;? 
 }
 ``` 
+
+### Dependencies
+
+In order to plot all graphs of the app, install the following library
+
+```sh
+$ npm install plotly.js-dist
+```
+
 1. https://youtu.be/c6y21FkaUqw
 2. https://www.youtube.com/watch?v=YtRA6tqgJBc

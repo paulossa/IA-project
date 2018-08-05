@@ -1,77 +1,80 @@
-airResistance = .95;
-
-function Bird(brain) {
-  this.y = height/2;
-  this.x = 70;
-
-  this.gravity = .4;
-  this.velocity = 0;
-  this.lift = -10;
-
-
-  this.score = 0;
-  this.fitness = 0;
-
-  if(brain) {
-    this.brain = brain.copy();
+function mutate(x) {
+  if (random(1) < 0.1) {
+    let offset = randomGaussian() * 0.5;
+    let newx = x + offset;
+    return newx;
   } else {
-    this.brain = new NeuralNetwork(4, 4, 2);
-  } 
+    return x;
+  }
+}
 
-  this.draw = function() {
-    stroke(255);
-    fill(255, 50);
-    ellipse(this.x, this.y, 32, 32);
+class Bird {
+  constructor(brain) {
+    this.x = 64;
+    this.y = height / 2;
+    this.r = 12;
+    this.gravity = 0.8;
+    this.lift = -12;
+    this.velocity = 0;
+
+    if (brain instanceof NeuralNetwork) {
+      this.brain = brain.copy();
+      this.brain.mutate(mutate);
+    } else {
+      this.brain = new NeuralNetwork(5, 8, 2);
+    }
+
+    this.score = 0;
+    this.fitness = 0;
   }
 
-  this.think = function(pipes) {
+  copy() {
+    return new Bird(this.brain);
+  }
 
-    // Find de closest pipe
+  show() {
+    fill(255, 100);
+    stroke(255);
+    ellipse(this.x, this.y, this.r * 2, this.r * 2);
+  }
+
+  think(pipes) {
     let closest = null;
-    let closestD = Infinity;
+    let record = Infinity;
     for (let i = 0; i < pipes.length; i++) {
-      let d =  pipes[i].x - this.x;
-      if(d < closestD && d > 0){
+      let diff = pipes[i].x - this.x;
+      if (diff > 0 && diff < record) {
+        record = diff;
         closest = pipes[i];
-        closestD = d;
       }
     }
 
-    let inputs = [];
-    inputs[0] = this.y / height;
-    inputs[1] = closest.top / height;
-    inputs[2] = closest.bottom / height;
-    inputs[3] = closest.x / width;
+    if (closest != null) {
+      let inputs = [];
+      inputs[0] = map(closest.x, this.x, width, 0, 1);
+      inputs[1] = map(closest.top, 0, height, 0, 1);
+      inputs[2] = map(closest.bottom, 0, height, 0, 1);
+      inputs[3] = map(this.y, 0, height, 0, 1);
+      inputs[4] = map(this.velocity, -5, 5, 0, 1);
 
-    let output = this.brain.predict(inputs);
-    if (output[0] > output[1]) {
-      this.up();
-    }
-
-  }
-
-  this.update = function() {
-
-    this.score++;
-
-    this.velocity += this.gravity;
-    this.velocity *= airResistance;
-    this.y += this.velocity;
-
-    if (this.y > height) {
-      this.y = height;
-      this.velocity = 0;
-    } else if (this.y < 0) {
-      this.y = 0;
-      this.velocity = 0;
+      let action = this.brain.predict(inputs);
+      if (action[1] > action[0]) {
+        this.up();
+      }
     }
   }
 
-  this.up = function ( ) {
+  up() {
     this.velocity += this.lift;
   }
 
-  this.mutate = function() {
-    //this.brain.mutate(0.1);
+  bottomTop() {
+    return (this.y > height || this.y < 0);
+  }
+
+  update() {
+    this.velocity += this.gravity;
+    this.y += this.velocity;
+    this.score++;
   }
 }
