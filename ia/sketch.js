@@ -47,7 +47,7 @@ function toggleState() {
 function plotGraphs() {
 
   var layout = {
-    title:'Graph of the High Score of the better bird with the pass of the generations',
+    title:'# of Generations / High Scores',
     xaxis: {
       title: '# of Generations',
     },
@@ -65,7 +65,7 @@ function plotGraphs() {
   Plotly.newPlot('graphHighScore', data, layout);
 
   var layout2 = {
-    title:'Graph of the High Score of the better bird of the current generation with the pass of the generations',
+    title:'# of Generations / High Scores of Current Generation',
     xaxis: {
       title: '# of Generations',
     },
